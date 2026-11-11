@@ -100,7 +100,7 @@ function GameController (
             return;
         }
 
-        console.log(`Placing ${getActivePlayer().name}'s mark into row ${row + 1} column ${column + 1}`);
+        console.log(`Placing ${getActivePlayer().name}'s mark into row ${Number(row) + 1} column ${Number(column) + 1}`);
         board.addMark(row, column, getActivePlayer().mark);
 
         if (playerHasWon(getActivePlayer().mark)) {
