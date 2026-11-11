@@ -48,6 +48,8 @@ function GameController (
     playerOneName = "Player One",
     playerTwoName = "Player Two"
 ) {
+    let playersCanPlay = true;
+
     const board = Gameboard();
 
     const winningCombinations = [
@@ -86,6 +88,11 @@ function GameController (
     };
 
     const playRound = (row, column) => {
+        if (!playersCanPlay) {
+            console.log("Oops, no more tries allowed");
+            return;
+        };
+
         if (board.getBoard()[row][column].getValue() !== 0) {
             console.log("Can't place a marker there!");
             return;
@@ -97,6 +104,7 @@ function GameController (
         if (playerHasWon(getActivePlayer().mark)) {
             printNewRound();
             console.log(`${getActivePlayer().name} wins!`);
+            playersCanPlay = false;
             return;
         };
 
@@ -133,3 +141,4 @@ game.playRound(1, 2);
 game.playRound(1, 1);
 game.playRound(2, 1);
 game.playRound(2, 2);
+game.playRound(0, 2);
