@@ -52,6 +52,8 @@ function GameController (
 
     const board = Gameboard();
 
+    const getBoard = () => board.getBoard();
+
     const winningCombinations = [
             [0, 1, 2],
             [3, 4, 5],
@@ -131,14 +133,50 @@ function GameController (
     return {
         playRound,
         getActivePlayer,
-        playerHasWon
+        playerHasWon,
+        getBoard
     };
 }
 
-const game = GameController();
-game.playRound(0, 0);
-game.playRound(1, 2);
-game.playRound(1, 1);
-game.playRound(2, 1);
-game.playRound(2, 2);
-game.playRound(0, 2);
+function screenController () {
+    const game = GameController();
+    const playerTurnDiv = document.getElementById("turn");
+    const boardDiv = document.getElementById("board");
+
+    const updateScreen = () => {
+        boardDiv.textContent = "";
+
+        const board = game.getBoard();
+        const activePlayer = game.getActivePlayer();
+
+        playerTurnDiv.textContent = `${activePlayer.name}'s turn!`;
+
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, cellIndex) => {
+                const cellButton = document.createElement("button");
+                cellButton.classList.add("cell");
+                cellButton.dataset.row = rowIndex;
+                cellButton.dataset.column = cellIndex;
+                cellButton.textContent = ["", "X", "O"][cell.getValue()];
+                cellButton.style.color = cellButton.textContent === "X" ? "#E83D65" : "#0799E8";
+                boardDiv.appendChild(cellButton);
+            });
+        });
+    };
+
+    function clickHandlerBoard (e) {
+        const selectedRow = e.target.dataset.row;
+        const selectedColumn = e.target.dataset.column;
+
+        if (!selectedRow || !selectedColumn) return;
+
+        game.playRound(selectedRow, selectedColumn);
+        updateScreen();
+    }
+
+    boardDiv.addEventListener("click", clickHandlerBoard);
+
+    updateScreen();
+}
+
+screenController();
