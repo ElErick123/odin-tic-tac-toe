@@ -18,11 +18,19 @@ function Gameboard () {
         board[row][column].addMark(player);
     };
 
+    const clearBoard = () => {
+        board.forEach(row => {
+            row.forEach(cell => {
+                cell.restartValue();
+            });
+        });
+    };
+
     const getBoardWithCellValues = () => {
         return board.map((row) => row.map((cell) => cell.getValue()));
     };
 
-    return { getBoard, addMark, getBoardWithCellValues };
+    return { getBoard, addMark, clearBoard, getBoardWithCellValues };
 }
 
 function Cell () {
@@ -34,9 +42,12 @@ function Cell () {
 
     const getValue = () => value;
 
+    const restartValue = () => value = 0;
+
     return {
         addMark,
-        getValue
+        getValue,
+        restartValue
     };
 }
 
@@ -80,6 +91,12 @@ function GameController (
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
 
+    const restartGame = () => {
+        board.clearBoard();
+        activePlayer = players[0];
+        playersCanPlay = true;
+    };
+
     const getActivePlayer = () => activePlayer;
 
     const playRound = (row, column) => {
@@ -121,6 +138,7 @@ function GameController (
     return {
         getPlayersCanPlay,
         playRound,
+        restartGame,
         getActivePlayer,
         playerHasWon,
         getBoard
@@ -132,6 +150,8 @@ const screenController = (function screenController () {
     const playerTurnDiv = document.getElementById("turn");
     const boardDiv = document.getElementById("board");
     const messageDiv = document.getElementById("message");
+
+    const getCurrentGame = () => game;
 
     const updateScreen = () => {
         boardDiv.textContent = "";
@@ -154,6 +174,8 @@ const screenController = (function screenController () {
         });
     };
 
+    const clearDisplay = () => messageDiv.textContent = "";
+
     const clickHandlerBoard = (e) => {
         if (!game.getPlayersCanPlay()) return;
 
@@ -162,7 +184,7 @@ const screenController = (function screenController () {
 
         if (selectedRow === undefined || selectedColumn === undefined) return;
 
-        messageDiv.textContent = "";
+        clearDisplay();
         game.playRound(selectedRow, selectedColumn);
         updateScreen();
     };
@@ -176,6 +198,28 @@ const screenController = (function screenController () {
     updateScreen();
 
     return {
+        getCurrentGame,
+        updateScreen,
+        clearDisplay,
         showMessage
     };
+})();
+
+(function UIController () {
+    const startButton = document.getElementById("start-button");
+    const restartButton = document.getElementById("restart-button");
+    const game = screenController.getCurrentGame();
+
+    const restartGame = () => {
+        game.restartGame();
+        screenController.clearDisplay();
+        screenController.updateScreen();
+    };
+
+    const startGame = () => {
+
+    };
+
+    restartButton.addEventListener("click", restartGame);
+    startButton.addEventListener("click", startGame);
 })();

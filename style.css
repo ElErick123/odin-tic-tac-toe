@@ -57,6 +57,30 @@ body {
     height: 50px;
 }
 
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100px;
+    width: 700px;
+}
+
+.buttons .button {
+    font-size: 2rem;
+    background-color: #E83D65;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 25px;
+    cursor: pointer;
+    transition: 0.1s ease;
+    min-width: 200px;
+}
+
+.buttons .button:hover {
+    filter: brightness(1.1);
+}
+
 .cell:hover {
     background-color: rgb(240, 240, 240);
 }
