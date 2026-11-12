@@ -22,11 +22,7 @@ function Gameboard () {
         return board.map((row) => row.map((cell) => cell.getValue()));
     };
 
-    const printBoard = () => {
-        console.log(getBoardWithCellValues());
-    };
-
-    return { getBoard, addMark, printBoard, getBoardWithCellValues };
+    return { getBoard, addMark, getBoardWithCellValues };
 }
 
 function Cell () {
@@ -49,6 +45,8 @@ function GameController (
     playerTwoName = "Player Two"
 ) {
     let playersCanPlay = true;
+
+    const getPlayersCanPlay = () => playersCanPlay;
 
     const board = Gameboard();
 
@@ -80,37 +78,27 @@ function GameController (
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
-        console.log(`${getActivePlayer().name}'s turn!`)
     };
 
     const getActivePlayer = () => activePlayer;
 
-    const printNewRound = () => {
-        board.printBoard();
-    };
-
     const playRound = (row, column) => {
         if (!playersCanPlay) {
-            console.log("Oops, no more tries allowed");
             return;
         };
 
         if (board.getBoard()[row][column].getValue() !== 0) {
-            console.log("Can't place a marker there!");
+            screenController.showMessage("Can't place a marker there!");
             return;
         }
 
-        console.log(`Placing ${getActivePlayer().name}'s mark into row ${Number(row) + 1} column ${Number(column) + 1}`);
         board.addMark(row, column, getActivePlayer().mark);
 
         if (playerHasWon(getActivePlayer().mark)) {
-            printNewRound();
-            console.log(`${getActivePlayer().name} wins!`);
+            screenController.showMessage(`${getActivePlayer().name} wins!`);
             playersCanPlay = false;
             return;
         };
-
-        printNewRound();
         switchPlayerTurn();
     };
 
@@ -131,6 +119,7 @@ function GameController (
     };
 
     return {
+        getPlayersCanPlay,
         playRound,
         getActivePlayer,
         playerHasWon,
@@ -138,10 +127,11 @@ function GameController (
     };
 }
 
-function screenController () {
+const screenController = (function screenController () {
     const game = GameController();
     const playerTurnDiv = document.getElementById("turn");
     const boardDiv = document.getElementById("board");
+    const messageDiv = document.getElementById("message");
 
     const updateScreen = () => {
         boardDiv.textContent = "";
@@ -164,19 +154,28 @@ function screenController () {
         });
     };
 
-    function clickHandlerBoard (e) {
+    const clickHandlerBoard = (e) => {
+        if (!game.getPlayersCanPlay()) return;
+
         const selectedRow = e.target.dataset.row;
         const selectedColumn = e.target.dataset.column;
 
-        if (!selectedRow || !selectedColumn) return;
+        if (selectedRow === undefined || selectedColumn === undefined) return;
 
+        messageDiv.textContent = "";
         game.playRound(selectedRow, selectedColumn);
         updateScreen();
-    }
+    };
+
+    const showMessage = (message) => {
+        messageDiv.textContent = message;
+    };
 
     boardDiv.addEventListener("click", clickHandlerBoard);
 
     updateScreen();
-}
 
-screenController();
+    return {
+        showMessage
+    };
+})();
