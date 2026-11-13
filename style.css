@@ -14,10 +14,16 @@
 
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: 100vw;
+}
+
+footer h1 {
+    padding: 30px 50px;
+    font-size: 2.6rem;
 }
 
 .container {
@@ -35,10 +41,9 @@ body {
 }
 
 .board {
-    visibility: hidden;
     display: grid;
-    height: 600px;
-    width: 600px;
+    height: 500px;
+    width: 500px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 8px;
@@ -52,10 +57,19 @@ body {
     align-items: center;
     padding: 20px;
     text-align: center;
-    font-size: 6.5rem;
+    font-size: 5rem;
     border: none;
     cursor: pointer;
     transition: 0.1s ease;
+}
+
+.cell:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.invalid-cell {
+    background-color: white;
+    border: none;
 }
 
 .message {
@@ -84,10 +98,6 @@ body {
 
 .buttons .button:hover {
     filter: brightness(1.1);
-}
-
-.cell:hover {
-    background-color: rgb(240, 240, 240);
 }
 
 /* START GAME MODAL */

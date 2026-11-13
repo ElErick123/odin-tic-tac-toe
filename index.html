@@ -12,13 +12,24 @@
         rel="stylesheet">
 </head>
 <body>
+    <footer>
+        <h1>Tic Tac Toe!</h1>
+    </footer>
 
     <div class="container" id="container">
         <h1 class="turn" id="turn"></h1>
         <div class="board" id="board">
-            
+            <button class="invalid-cell"></button>
+            <button class="invalid-cell"></button>
+            <button class="invalid-cell"></button>
+            <button class="invalid-cell"></button>
+            <button class="invalid-cell"></button>
+            <button class="invalid-cell"></button>
+            <button class="invalid-cell"></button>
+            <button class="invalid-cell"></button>
+            <button class="invalid-cell"></button>
         </div>
-        <h1 class="message" id="message"></h1>
+        <h2 class="message" id="message"></h2>
 
         <div class="buttons">
             <button class="button" id="start-button">Start</button>
@@ -29,7 +40,7 @@
 
     <dialog class="start-game-modal" id="start-game-modal">
         <form action="" method="dialog" onclick="event.stopPropagation()">
-            <h2>Name your players</h2>
+            <h2>Name your players!</h2>
             <div class="input-cell">
                 <label for="player-one-name">Player One</label>
                 <input type="text" id="player-one-name" placeholder="Player One">

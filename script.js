@@ -150,7 +150,6 @@ const screenController = (function screenController () {
 
     const initializeGame = (playerOneName, playerTwoName) => {
         game = GameController(playerOneName || "Player One", playerTwoName || "Player Two");
-        boardDiv.style.visibility = "visible";
     };
 
     const getCurrentGame = () => game;
