@@ -146,10 +146,16 @@ function GameController (
 }
 
 const screenController = (function screenController () {
-    const game = GameController();
+    let game = undefined;
     const playerTurnDiv = document.getElementById("turn");
     const boardDiv = document.getElementById("board");
     const messageDiv = document.getElementById("message");
+
+    const initializeGame = () => {
+        game = GameController();
+        boardDiv.style.visibility = "visible";
+        updateScreen();
+    };
 
     const getCurrentGame = () => game;
 
@@ -195,9 +201,8 @@ const screenController = (function screenController () {
 
     boardDiv.addEventListener("click", clickHandlerBoard);
 
-    updateScreen();
-
     return {
+        initializeGame,
         getCurrentGame,
         updateScreen,
         clearDisplay,
@@ -208,7 +213,7 @@ const screenController = (function screenController () {
 (function UIController () {
     const startButton = document.getElementById("start-button");
     const restartButton = document.getElementById("restart-button");
-    const game = screenController.getCurrentGame();
+    let game = undefined;
 
     const restartGame = () => {
         game.restartGame();
@@ -217,7 +222,8 @@ const screenController = (function screenController () {
     };
 
     const startGame = () => {
-
+        screenController.initializeGame();
+        game = screenController.getCurrentGame();
     };
 
     restartButton.addEventListener("click", restartGame);

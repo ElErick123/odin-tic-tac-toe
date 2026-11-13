@@ -30,10 +30,15 @@ body {
     gap: 35px;
 }
 
+.turn {
+    height: 50px;
+}
+
 .board {
+    visibility: hidden;
     display: grid;
-    height: 700px;
-    width: 700px;
+    height: 600px;
+    width: 600px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 8px;
@@ -47,7 +52,7 @@ body {
     align-items: center;
     padding: 20px;
     text-align: center;
-    font-size: 7rem;
+    font-size: 6.5rem;
     border: none;
     cursor: pointer;
     transition: 0.1s ease;
