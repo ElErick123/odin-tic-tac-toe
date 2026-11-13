@@ -113,8 +113,17 @@ function GameController (playerOneName, playerTwoName) {
             playersCanPlay = false;
             return;
         };
+
+        if (boardIsFull()) {
+            screenController.showMessage("Its a draw!");
+            playersCanPlay = false;
+            return;
+        }
+
         switchPlayerTurn();
     };
+
+    const boardIsFull = () => board.getBoard().flat().every(cell => cell.getValue() !== 0);
 
     const playerHasWon = (player) => {
         const linearBoard = board.getBoardWithCellValues().flat();
