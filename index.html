@@ -27,6 +27,21 @@
         </div>
     </div>
 
+    <dialog class="start-game-modal" id="start-game-modal">
+        <form action="" method="dialog" onclick="event.stopPropagation()">
+            <h2>Name your players</h2>
+            <div class="input-cell">
+                <label for="player-one-name">Player One</label>
+                <input type="text" id="player-one-name" placeholder="Player One">
+            </div>
+            <div class="input-cell">
+                <label for="player-two-name">Player Two</label>
+                <input type="text" id="player-two-name" placeholder="Player Two">
+            </div>
+            <button type="submit" id="start-game-button">Start Game</button>
+        </form>
+    </dialog>
+
     <script src="./script.js"></script>
 </body>
 </html>

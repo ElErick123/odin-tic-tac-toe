@@ -51,10 +51,7 @@ function Cell () {
     };
 }
 
-function GameController (
-    playerOneName = "Player One",
-    playerTwoName = "Player Two"
-) {
+function GameController (playerOneName, playerTwoName) {
     let playersCanPlay = true;
 
     const getPlayersCanPlay = () => playersCanPlay;
@@ -151,10 +148,9 @@ const screenController = (function screenController () {
     const boardDiv = document.getElementById("board");
     const messageDiv = document.getElementById("message");
 
-    const initializeGame = () => {
-        game = GameController();
+    const initializeGame = (playerOneName, playerTwoName) => {
+        game = GameController(playerOneName || "Player One", playerTwoName || "Player Two");
         boardDiv.style.visibility = "visible";
-        updateScreen();
     };
 
     const getCurrentGame = () => game;
@@ -213,19 +209,41 @@ const screenController = (function screenController () {
 (function UIController () {
     const startButton = document.getElementById("start-button");
     const restartButton = document.getElementById("restart-button");
+    const startGameModal = document.getElementById("start-game-modal");
+    const startGameButton = document.getElementById("start-game-button");
+    const playerOneInput = document.getElementById("player-one-name");
+    const playerTwoInput = document.getElementById("player-two-name");
     let game = undefined;
 
     const restartGame = () => {
+        if (game === undefined) return;
+
         game.restartGame();
         screenController.clearDisplay();
         screenController.updateScreen();
     };
 
-    const startGame = () => {
-        screenController.initializeGame();
+    const startModal = () => {
+        startGameModal.showModal();
+        playerOneInput.value = "";
+        playerTwoInput.value = "";
+    };
+
+    const startGame = (e) => {
+        e.preventDefault();
+        startGameModal.close();
+        screenController.initializeGame(playerOneInput.value, playerTwoInput.value);
+        screenController.clearDisplay();
+        screenController.updateScreen();
         game = screenController.getCurrentGame();
     };
 
     restartButton.addEventListener("click", restartGame);
-    startButton.addEventListener("click", startGame);
+    startButton.addEventListener("click", startModal);
+    startGameButton.addEventListener("click", startGame);
+    startGameModal.addEventListener("click", (e) => {
+        if (e.target !== startGameModal) return;
+        
+        startGameModal.close();
+    });
 })();
