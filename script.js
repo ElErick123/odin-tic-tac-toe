@@ -13,8 +13,6 @@ function Gameboard () {
     const getBoard = () => board;
 
     const addMark = (row, column, player) => {
-        if (board[row][column].getValue() !== 0) return;
-
         board[row][column].addMark(player);
     };
 
