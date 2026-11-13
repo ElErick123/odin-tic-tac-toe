@@ -194,12 +194,14 @@ const screenController = (function screenController () {
     const clearDisplay = () => messageDiv.textContent = "";
 
     const clickHandlerBoard = (e) => {
+        if (e.target.tagName !== "BUTTON") return;
+
         if (!game.getPlayersCanPlay()) return;
 
-        const selectedRow = Number(e.target.dataset.row);
-        const selectedColumn = Number(e.target.dataset.column);
+        const selectedRow = e.target.dataset.row;
+        const selectedColumn = e.target.dataset.column;
 
-        if (Number.isNaN(selectedRow) || Number.isNaN(selectedColumn)) return;
+        if (selectedRow === undefined || selectedColumn === undefined) return;
 
         clearDisplay();
         game.playRound(selectedRow, selectedColumn);
