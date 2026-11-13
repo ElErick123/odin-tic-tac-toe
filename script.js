@@ -13,6 +13,8 @@ function Gameboard () {
     const getBoard = () => board;
 
     const addMark = (row, column, player) => {
+        if (board[row][column].getValue() !== 0) return;
+
         board[row][column].addMark(player);
     };
 
@@ -80,7 +82,14 @@ function GameController (playerOneName, playerTwoName) {
         }
     ];
 
-    let activePlayer = players[0];
+    let activePlayer = null;
+
+    const makeActivePlayer = () => {
+        const randomNumber = Math.floor(Math.random() * 2);
+        activePlayer = players[randomNumber];
+    };
+
+    makeActivePlayer();
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
@@ -88,7 +97,7 @@ function GameController (playerOneName, playerTwoName) {
 
     const restartGame = () => {
         board.clearBoard();
-        activePlayer = players[0];
+        makeActivePlayer();
         playersCanPlay = true;
     };
 
@@ -187,10 +196,10 @@ const screenController = (function screenController () {
     const clickHandlerBoard = (e) => {
         if (!game.getPlayersCanPlay()) return;
 
-        const selectedRow = e.target.dataset.row;
-        const selectedColumn = e.target.dataset.column;
+        const selectedRow = Number(e.target.dataset.row);
+        const selectedColumn = Number(e.target.dataset.column);
 
-        if (selectedRow === undefined || selectedColumn === undefined) return;
+        if (Number.isNaN(selectedRow) || Number.isNaN(selectedColumn)) return;
 
         clearDisplay();
         game.playRound(selectedRow, selectedColumn);
